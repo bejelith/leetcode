@@ -6,24 +6,24 @@
  * }
  */
 func doubleIt(head *ListNode) *ListNode {
-    if carry := helper(head); carry > 0{
-        head = &ListNode{carry, head}
-    }
-    return head
+	if carry := helper(head); carry > 0 {
+		head = &ListNode{carry, head}
+	}
+	return head
 }
 
 func helper(head *ListNode) int {
-    if head.Next == nil {
-        head.Val *= 2
-        newVal := head.Val % 10
-        carry := head.Val / 10
-        head.Val = newVal
-        return carry
-    }
-    head.Val *= 2 
-    head.Val += helper(head.Next)
-    newval := head.Val % 10
-    carry := head.Val / 10
-    head.Val = newval
-    return  carry
+	var carry int
+	if head.Next == nil {
+		head.Val, carry = double(head.Val, 0)
+		return carry
+	}
+	head.Val, carry = double(head.Val, helper(head.Next))
+	return carry
+}
+
+func double(val, adder int) (int, int) {
+	val *= 2
+	val += adder
+	return val % 10, val / 10
 }
